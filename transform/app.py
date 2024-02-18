@@ -8,11 +8,10 @@ def main():
 
     # Read JSON file into a DataFrame
     json_file_path = "files/repositories.json"  # Replace with the path to your JSON file
-    df = spark.read.json(json_file_path)
-
+    df = spark.read.option("multiLine", True).json(json_file_path).cache()
+    
     # Show the DataFrame content
-    df.show()
-
+    df.select("full_name","id","name","owner.login").show()
     # Stop the SparkSession
     spark.stop()
 
