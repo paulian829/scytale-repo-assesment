@@ -8,8 +8,18 @@ Before you begin, make sure you have the following installed and configured on y
 - **Windows Subsystem for Linux (WSL):** This project requires WSL for Windows users. Follow the official Microsoft documentation to install and set up WSL on your Windows system.
 - **Make:** The make command is used to automate the building and running of Docker containers through Makefiles. Ensure make is installed on your system. Linux and macOS systems usually have it pre-installed. Windows users can access make through WSL or other Unix-like environments.
 
+## Configuration
+### Setting up the `.env` file for Github Data Fetching
+For the GitHub data fetching component (extract), you need to set up a .env file to securely store your GitHub access token. This token allows the application to authenticate with GitHub's API and access data.
 
-## Transform
+Link: https://github.com/settings/tokens
+
+.env
+```
+GITHUB_TOKEN=your_token_here
+```
+
+## Structure
 - `/transform` - Contains the PySpark application designed to perform data transformations.
 - `/extract` - Contains the tool for fetching data from GitHub.
 
