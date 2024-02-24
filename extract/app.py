@@ -21,18 +21,27 @@ def get_repos(username):
         print(f'Failed to fetch repositories for user {username}')
         return []
 
-def get_pull_requests(username, repo_name):
-    """Fetches pull requests for a given repository of a user"""
-    url = f'https://api.github.com/repos/{username}/{repo_name}/pulls'
+def get_pull_requests(username, repo_name, token=None):
+    """Fetches all pull requests for a given repository of a user, handling pagination."""
+    pull_requests = []
+    url = f'https://api.github.com/repos/{username}/{repo_name}/pulls?state=all&per_page=100'
     headers = {'Authorization': f'token {token}'} if token else {}
-    response = requests.get(url, headers=headers)
-    print(response)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(response.json())
-        print(f'Failed to fetch pull requests for {repo_name}')
-        return []
+    
+    while url:
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            pull_requests.extend(response.json())
+            # Check if 'Link' header is present and contains a 'next' URL
+            if 'next' in response.links.keys():
+                url = response.links['next']['url']
+            else:
+                url = None  # No more pages
+        else:
+            print(response.json())
+            print(f'Failed to fetch pull requests for {repo_name}')
+            break
+
+    return pull_requests
 
 def save_to_file(data, filename):
     """Saves data to a JSON file in the specified directory."""
@@ -49,7 +58,7 @@ def main():
         repo_name = repo['name']
         print(f"Repository: {repo_name}")
         pull_requests = get_pull_requests(username, repo_name)
-        save_to_file(pull_requests, f"{repo_name}_pull_requests.json")  # Save pull requests to file
+        save_to_file(pull_requests, f"{repo['id']}.json")  # Save pull requests to file
 
 if __name__ == "__main__":
     main()
