@@ -2,12 +2,12 @@ import requests
 import json
 import os
 import time
-
+from config import GITHUB_TOKEN
 # Replace 'username' with the GitHub username you're interested in
 username = 'Scytale-exercise'
 
 # Optional: Insert your GitHub token here for increased rate limits
-token = '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'  # Leave this as an empty string if you don't want to use a token
+token = GITHUB_TOKEN  # Leave this as an empty string if you don't want to use a token
 
 def get_repos(username):
     """Fetches repositories for a given GitHub username"""
