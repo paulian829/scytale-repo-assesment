@@ -22,7 +22,7 @@ RUN pip install pyspark
 COPY . .
 
 # Define environment variable
-ENV NAME World
+ENV PYTHONUNBUFFERED=1
 
 VOLUME /usr/src/app/files
 
